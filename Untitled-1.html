@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRAVA - Daily Memecoin Runners</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Interactive Particle Background */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Header */
+        header {
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 50%, #ffffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+            animation: logoGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { filter: brightness(1) drop-shadow(0 0 20px rgba(59, 130, 246, 0.5)); }
+            50% { filter: brightness(1.2) drop-shadow(0 0 30px rgba(59, 130, 246, 0.8)); }
+        }
+
+        .tagline {
+            font-size: 12px;
+            color: #60fa74;
+            margin-top: 2px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 20px;
+            border: 2px solid #3b82f6;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links a:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-links a:hover:before {
+            left: 100%;
+        }
+
+        .nav-links a:hover {
+            background: #5a1313;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 100px;
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #3b82f6, #60a5fa, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #9ca3af;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Coin Grid */
+        .coin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .coin-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coin-card:before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #3b82f6, #60a5fa, #3b82f6);
+            border-radius: 20px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+
+        .coin-card:hover:before {
+            opacity: 1;
+        }
+
+        .coin-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .coin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .coin-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .coin-symbol {
+            font-size: 14px;
+            color: #60a5fa;
+            background: rgba(59, 130, 246, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .coin-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: #60a5fa;
+            margin-top: 5px;
+        }
+
+        .gain-positive {
+            color: #10b981;
+        }
+
+        .gain-negative {
+            color: #ef4444;
+        }
+
+        /* Loading Animation */
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(59, 130, 246, 0.3);
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Date Display */
+        .date-display {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 18px;
+            color: #60a5fa;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 80px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #9ca3af;
+        }
+
+        /* Share Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            color: #ffffff;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        /* Share Card Canvas */
+        #shareCanvas {
+            width: 100%;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .share-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .share-btn, .download-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .download-btn {
+            background: #3b82f6;
+            color: #ffffff;
+        }
+
+        .download-btn:hover {
+            background: #60a5fa;
+            transform: translateY(-2px);
+        }
+
+        .share-btn {
+            background: #1da1f2;
+            color: #ffffff;
+        }
+
+        .share-btn:hover {
+            background: #1a8cd8;
+            transform: translateY(-2px);
+        }
+
+        /* Share Button on Cards */
+        .card-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .share-card-btn {
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid #3b82f6;
+            color: #60a5fa;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .share-card-btn:hover {
+            background: rgba(59, 130, 246, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .contract-address {
+            font-size: 12px;
+            color: #9ca3af;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: #60a5fa;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .copy-btn.copied {
+            background: #10b981;
+            color: #ffffff;
+        }
+
+        /* Error message */
+        .error-message {
+            text-align: center;
+            padding: 40px;
+            color: #ef4444;
+        }
+
+        /* Add/Remove coin controls */
+        .coin-controls {
+            max-width: 1200px;
+            margin: 0 auto 30px;
+            padding: 0 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .coin-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 30px;
+            color: #ffffff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .coin-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .add-coin-btn {
+            padding: 12px 24px;
+            background: #3b82f6;
+            color: #ffffff;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-coin-btn:hover {
+            background: #60a5fa;
+            transform: translateY(-2px);
+        }
+
+        .chain-name {
+            font-size: 11px;
+            color: #9ca3af;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particles"></canvas>
+
+    <header>
+        <div class="header-content">
+            <div>
+                <div class="logo">TRAVA</div>
+                <div class="tagline">Trending + Strava = TRAVA</div>
+            </div>
+            <nav class="nav-links">
+                <a href="https://x.com" target="_blank">X.com</a>
+                <a href="https://pump.fun" target="_blank">Pump.fun</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="hero">
+            <h1>Daily Memecoin Runners 🚀</h1>
+            <p>Track the hottest memecoins that launched and mooned today</p>
+        </div>
+
+        <div class="date-display" id="dateDisplay"></div>
+
+        <div class="coin-controls">
+            <input type="text" class="coin-input" id="coinAddressInput" placeholder="Enter coin address (e.g., solana:0x...)">
+            <button class="add-coin-btn" onclick="addCoin()">Add Coin</button>
+        </div>
+
+        <div id="coinContainer" class="coin-grid">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p style="margin-top: 20px; color: #9ca3af;">Loading today's runners...</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 TRAVA - Daily Memecoin Runners</p>
+    </footer>
+
+    <!-- Share Modal -->
+    <div class="modal-overlay" id="shareModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeShareModal()">×</button>
+            <h3 style="color: #ffffff; margin-bottom: 20px; text-align: center;">Share This Gem 💎</h3>
+            <canvas id="shareCanvas" width="800" height="418"></canvas>
+            <div class="share-actions">
+                <button class="download-btn" onclick="downloadShareCard()">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"/>
+                    </svg>
+                    Download
+                </button>
+                <a href="#" class="share-btn" id="twitterShareBtn" target="_blank">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                    Share on X
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Interactive Particle Background
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouseX = 0;
+        let mouseY = 0;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * 3 - 1.5;
+                this.color = Math.random() > 0.5 ? '#3b82f6' : '#60a5fa';
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Mouse interaction
+                const dx = mouseX - this.x;
+                const dy = mouseY - this.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 100) {
+                    const forceDirectionX = dx / distance;
+                    const forceDirectionY = dy / distance;
+                    const force = (100 - distance) / 100;
+                    this.speedX -= forceDirectionX * force * 2;
+                    this.speedY -= forceDirectionY * force * 2;
+                }
+
+                // Wrap around screen
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+
+                // Slow down
+                this.speedX *= 0.98;
+                this.speedY *= 0.98;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Create particles
+        for (let i = 0; i < 150; i++) {
+            particles.push(new Particle());
+        }
+
+        // Mouse move event
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        // Animation loop
+        function animate() {
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            // Draw connections
+            particles.forEach((particle, i) => {
+                particles.slice(i + 1).forEach(particle2 => {
+                    const dx = particle.x - particle2.x;
+                    const dy = particle.y - particle2.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 100) {
+                        ctx.strokeStyle = `rgba(59, 130, 246, ${0.2 * (1 - distance / 100)})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particle.x, particle.y);
+                        ctx.lineTo(particle2.x, particle2.y);
+                        ctx.stroke();
+                    }
+                });
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // Store coin addresses and data
+        let coinAddresses = [];
+        let coinsData = [];
+
+        // Display current date
+        const dateDisplay = document.getElementById('dateDisplay');
+        const today = new Date();
+        dateDisplay.textContent = today.toLocaleDateString('en-US', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+
+        // Fetch coin data from DexScreener API
+        async function fetchCoinData(address) {
+            try {
+                const response = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${address}`);
+                const data = await response.json();
+                
+                if (data.pairs && data.pairs.length > 0) {
+                    // Get the pair with highest liquidity
+                    const bestPair = data.pairs.reduce((best, current) => {
+                        const currentLiquidity = current.liquidity?.usd || 0;
+                        const bestLiquidity = best.liquidity?.usd || 0;
+                        return currentLiquidity > bestLiquidity ? current : best;
+                    });
+
+                    return {
+                        name: bestPair.baseToken.name || 'Unknown',
+                        symbol: bestPair.baseToken.symbol || 'N/A',
+                        price: formatPrice(bestPair.priceUsd),
+                        gain: formatGain(bestPair.priceChange?.h24 || 0),
+                        volume: formatVolume(bestPair.volume?.h24 || 0),
+                        liquidity: formatVolume(bestPair.liquidity?.usd || 0),
+                        contract: address,
+                        chain: bestPair.chainId || 'Unknown',
+                        pairAddress: bestPair.pairAddress,
+                        dexScreenerUrl: bestPair.url
+                    };
+                }
+                return null;
+            } catch (error) {
+                console.error('Error fetching coin data:', error);
+                return null;
+            }
+        }
+
+        // Format price
+        function formatPrice(price) {
+            if (!price || price === 0) return '$0.00';
+            
+            const num = parseFloat(price);
+            if (num < 0.00001) {
+                return `$${num.toExponential(4)}`;
+            } else if (num < 1) {
+                return `$${num.toFixed(8).replace(/\.?0+$/, '')}`;
+            } else {
+                return `$${num.toFixed(2)}`;
+            }
+        }
+
+        // Format gain
+        function formatGain(change) {
+            const sign = change >= 0 ? '+' : '';
+            return `${sign}${change.toFixed(2)}%`;
+        }
+
+        // Format volume
+        function formatVolume(volume) {
+            if (volume >= 1000000) {
+                return `$${(volume / 1000000).toFixed(1)}M`;
+            } else if (volume >= 1000) {
+                return `$${(volume / 1000).toFixed(1)}K`;
+            } else {
+                return `$${volume.toFixed(0)}`;
+            }
+        }
+
+        // Format address
+        function formatAddress(address) {
+            if (address.length > 10) {
+                return `${address.slice(0, 6)}...${address.slice(-4)}`;
+            }
+            return address;
+        }
+
+        // Render coins
+        async function renderCoins() {
+            const container = document.getElementById('coinContainer');
+            
+            if (coinAddresses.length === 0) {
+                container.innerHTML = `
+                    <div class="error-message">
+                        <p>No coins added yet. Add coin addresses above to start tracking!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p style="margin-top: 20px; color: #9ca3af;">Loading coin data...</p>
+                </div>
+            `;
+
+            coinsData = [];
+            
+            for (const address of coinAddresses) {
+                const data = await fetchCoinData(address);
+                if (data) {
+                    coinsData.push(data);
+                }
+            }
+
+            if (coinsData.length === 0) {
+                container.innerHTML = `
+                    <div class="error-message">
+                        <p>No valid coin data found. Please check the addresses.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = coinsData.map((coin, index) => `
+                <div class="coin-card">
+                    <div class="coin-header">
+                        <div>
+                            <div class="coin-name">${coin.name}</div>
+                            <div class="chain-name">${coin.chain}</div>
+                        </div>
+                        <div class="coin-symbol">${coin.symbol}</div>
+                    </div>
+                    <div class="coin-stats">
+                        <div class="stat">
+                            <div class="stat-label">Price</div>
+                            <div class="stat-value">${coin.price}</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">24h Change</div>
+                            <div class="stat-value ${parseFloat(coin.gain) >= 0 ? 'gain-positive' : 'gain-negative'}">${coin.gain}</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Volume</div>
+                            <div class="stat-value">${coin.volume}</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Liquidity</div>
+                            <div class="stat-value">${coin.liquidity}</div>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <div class="contract-address">
+                            <span>${formatAddress(coin.contract)}</span>
+                            <button class="copy-btn" onclick="copyContract('${coin.contract}', this)">Copy</button>
+                        </div>
+                        <button class="share-card-btn" onclick="openShareModal(${index})">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"/>
+                            </svg>
+                            Share
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Add coin function
+        function addCoin() {
+            const input = document.getElementById('coinAddressInput');
+            const address = input.value.trim();
+            
+            if (address && !coinAddresses.includes(address)) {
+                coinAddresses.push(address);
+                input.value = '';
+                renderCoins();
+            }
+        }
+
+        // Allow Enter key to add coin
+        document.getElementById('coinAddressInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addCoin();
+            }
+        });
+
+        // Share functionality
+        let currentCoinData = null;
+
+        function openShareModal(coinIndex) {
+            currentCoinData = coinsData[coinIndex];
+            document.getElementById('shareModal').style.display = 'flex';
+            generateShareCard();
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareModal').style.display = 'none';
+        }
+
+        function generateShareCard() {
+            const canvas = document.getElementById('shareCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, 800, 418);
+            gradient.addColorStop(0, '#0a0a0a');
+            gradient.addColorStop(0.5, '#0f172a');
+            gradient.addColorStop(1, '#0a0a0a');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 800, 418);
+
+            // Add grid pattern
+            ctx.strokeStyle = 'rgba(59, 130, 246, 0.1)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < 800; i += 40) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, 418);
+                ctx.stroke();
+            }
+            for (let i = 0; i < 418; i += 40) {
+                ctx.beginPath();
+                ctx.moveTo(0, i);
+                ctx.lineTo(800, i);
+                ctx.stroke();
+            }
+
+            // Add glow effect
+            const glowGradient = ctx.createRadialGradient(400, 209, 0, 400, 209, 300);
+            glowGradient.addColorStop(0, 'rgba(59, 130, 246, 0.2)');
+            glowGradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
+            ctx.fillStyle = glowGradient;
+            ctx.fillRect(0, 0, 800, 418);
+
+            // TRAVA Logo
+            ctx.font = 'bold 36px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+            const logoGradient = ctx.createLinearGradient(50, 30, 150, 70);
+            logoGradient.addColorStop(0, '#3b82f6');
+            logoGradient.addColorStop(0.5, '#60a5fa');
+            logoGradient.addColorStop(1, '#ffffff');
+            ctx.fillStyle = logoGradient;
+            ctx.fillText('TRAVA', 50, 60);
+
+            // Tagline
+            ctx.font = '14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+            ctx.fillStyle = '#60a5fa';
+            ctx.fillText('DAILY MEMECOIN RUNNERS', 50, 85);
+
+            // Main content box
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.strokeStyle = 'rgba(59, 130, 246, 0.3)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.roundRect(50, 120, 700, 200, 20);
+            ctx.fill();
+            ctx.stroke();
+
+            // Coin name
+            ctx.font = 'bold 48px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText(currentCoinData.name, 80, 190);
+
+            // Symbol in top right of the card
+            ctx.font = '24px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+            ctx.fillStyle = '#60a5fa';
+            const symbolWidth = ctx.measureText(currentCoinData.symbol).width;
+            ctx.fillStyle = 'rgba(59, 130, 246, 0.2)';
+            ctx.beginPath();
+            ctx.roundRect(700 - symbolWidth - 50, 140, symbolWidth + 30, 40, 20);
+            ctx.fill();
+            ctx.fillStyle = '#60a5fa';
+            ctx.fillText(currentCoinData.symbol, 700 - symbolWidth - 35, 167);
+
+            // Stats
+            const stats = [
+                { label: 'PRICE', value: currentCoinData.price },
+                { label: '24H CHANGE', value: currentCoinData.gain, highlight: parseFloat(currentCoinData.gain) >= 0 },
+                { label: 'VOLUME', value: currentCoinData.volume },
+                { label: 'LIQUIDITY', value: currentCoinData.liquidity }
+            ];
+
+            stats.forEach((stat, i) => {
+                const x = 80 + (i * 160);
+                ctx.font = '12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                ctx.fillStyle = '#9ca3af';
+                ctx.fillText(stat.label, x, 250);
+                
+                ctx.font = 'bold 24px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                ctx.fillStyle = stat.highlight ? '#10b981' : (stat.highlight === false ? '#ef4444' : '#60a5fa');
+                ctx.fillText(stat.value, x, 280);
+            });
+
+            // Footer
+            ctx.font = '16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+            ctx.fillStyle = '#9ca3af';
+            ctx.fillText('Track more gems at TRAVA', 50, 370);
+            
+            // Website URL
+            ctx.font = 'bold 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+            ctx.fillStyle = '#3b82f6';
+            ctx.fillText('trava.io', 250, 370);
+
+            // Chain name
+            ctx.font = '14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+            ctx.fillStyle = '#60a5fa';
+            ctx.fillText(`Chain: ${currentCoinData.chain}`, 600, 370);
+
+            // Rocket emoji
+            ctx.font = '64px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+            ctx.fillText('🚀', 650, 380);
+
+            // Update Twitter share link
+            const tweetText = `Just found ${currentCoinData.name} (${currentCoinData.symbol}) on TRAVA! 🚀\n\n📈 ${currentCoinData.gain} in 24h\n💰 Volume: ${currentCoinData.volume}\n💧 Liquidity: ${currentCoinData.liquidity}\n\nTrack more daily runners at`;
+            const twitterUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent('https://trava.io')}`;
+            document.getElementById('twitterShareBtn').href = twitterUrl;
+        }
+
+        function downloadShareCard() {
+            const canvas = document.getElementById('shareCanvas');
+            const link = document.createElement('a');
+            link.download = `TRAVA-${currentCoinData.name.replace(/\s+/g, '-')}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        function copyContract(contract, button) {
+            navigator.clipboard.writeText(contract);
+            button.textContent = 'Copied!';
+            button.classList.add('copied');
+            setTimeout(() => {
+                button.textContent = 'Copy';
+                button.classList.remove('copied');
+            }, 2000);
+        }
+
+        // Close modal on overlay click
+        document.getElementById('shareModal').addEventListener('click', (e) => {
+            if (e.target.id === 'shareModal') {
+                closeShareModal();
+            }
+        });
+
+        // Add roundRect polyfill for older browsers
+        if (!CanvasRenderingContext2D.prototype.roundRect) {
+            CanvasRenderingContext2D.prototype.roundRect = function(x, y, width, height, radius) {
+                this.beginPath();
+                this.moveTo(x + radius, y);
+                this.lineTo(x + width - radius, y);
+                this.quadraticCurveTo(x + width, y, x + width, y + radius);
+                this.lineTo(x + width, y + height - radius);
+                this.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+                this.lineTo(x + radius, y + height);
+                this.quadraticCurveTo(x, y + height, x, y + height - radius);
+                this.lineTo(x, y + radius);
+                this.quadraticCurveTo(x, y, x + radius, y);
+                this.closePath();
+            };
+        }
+
+        // Load coins from URL parameters or localStorage
+        function loadSavedCoins() {
+            // Check URL parameters first
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlCoins = urlParams.get('coins');
+            
+            if (urlCoins) {
+                coinAddresses = urlCoins.split(',');
+            } else {
+                // Fall back to localStorage
+                const saved = localStorage.getItem('travaCoins');
+                if (saved) {
+                    coinAddresses = JSON.parse(saved);
+                }
+            }
+            
+            if (coinAddresses.length > 0) {
+                renderCoins();
+            }
+        }
+
+        // Save coins to localStorage
+        function saveCoins() {
+            localStorage.setItem('travaCoins', JSON.stringify(coinAddresses));
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            loadSavedCoins();
+        });
+
+        // Save coins whenever they change
+        window.addEventListener('beforeunload', saveCoins);
+    </script>
+</body>
+</html>
